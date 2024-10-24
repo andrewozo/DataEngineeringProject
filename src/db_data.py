@@ -23,12 +23,12 @@ metadata = MetaData()
 
 
 try:
-    people_table = Table('transaction', metadata, autoload_with=engine)
+    transaction_table = Table('transaction', metadata, autoload_with=engine)
     
 
     # Perform query using table object
     with engine.connect() as connection:
-        query = select(people_table)  # Equivalent to SELECT * FROM people
+        query = select(transaction_table)  # Equivalent to SELECT * FROM people
         result = connection.execute(query)
         
         df = pd.DataFrame(result.fetchall(),columns=result.keys())
