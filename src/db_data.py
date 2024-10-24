@@ -2,6 +2,8 @@ from configparser import ConfigParser
 
 from sqlalchemy import create_engine, MetaData, Table, select
 
+import pandas as pd
+
 try:
     config = ConfigParser()
     config.read('../config.ini')
@@ -28,11 +30,12 @@ try:
     with engine.connect() as connection:
         query = select(people_table)  # Equivalent to SELECT * FROM people
         result = connection.execute(query)
-        print(result)
         
-        # Fetch and print results
-        for row in result:
-            print(row)
+        df = pd.DataFrame(result.fetchall(),columns=result.keys())
+
+        df.to_csv('transaction_data.csv',index=False)
+        print("Data exported to be transaction_data.csv")
+        
 except Exception as e:
     print(f"An error occurred: {e}")
 
